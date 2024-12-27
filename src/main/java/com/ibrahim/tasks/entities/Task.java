@@ -1,11 +1,10 @@
-package com.ibrahim.tasks.model;
+package com.ibrahim.tasks.entities;
 
 
 import jakarta.persistence.*;
 import lombok.*;
 
 import java.time.LocalDateTime;
-import java.util.List;
 import java.util.UUID;
 
 @Data
@@ -14,8 +13,9 @@ import java.util.UUID;
 @Builder
 @EqualsAndHashCode
 @Entity
-@Table(name = "task_list")
-public class TaskList {
+@Table(name = "tasks")
+
+public class Task {
 
     @Id
     @GeneratedValue(strategy = GenerationType.UUID)
@@ -28,13 +28,22 @@ public class TaskList {
     @Column(name = "description")
     private String description;
 
+    @Column(name = "due_date")
+    private LocalDateTime dueDate;
+
+    @Column(name = "status", nullable = false)
+    private TaskStatus status;
+
+    @Column(name = "priority", nullable = false)
+    private TaskPriority priority;
+
     @Column(name = "created", nullable = false)
     private LocalDateTime created;
 
     @Column(name = "updated", nullable = false)
     private LocalDateTime updated;
 
-    @OneToMany(mappedBy = "taskList", cascade =
-            {CascadeType.REMOVE, CascadeType.PERSIST})
-    private List<Task> tasks;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "task_list_id")
+    private TaskList taskList;
 }

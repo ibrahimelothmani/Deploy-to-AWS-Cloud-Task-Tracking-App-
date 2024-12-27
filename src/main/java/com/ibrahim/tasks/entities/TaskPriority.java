@@ -1,4 +1,4 @@
-package com.ibrahim.tasks.model;
+package com.ibrahim.tasks.entities;
 
 public enum TaskPriority {
     HIGH,
