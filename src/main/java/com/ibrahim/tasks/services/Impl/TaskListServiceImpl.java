@@ -3,6 +3,7 @@ package com.ibrahim.tasks.services.Impl;
 import com.ibrahim.tasks.entities.TaskList;
 import com.ibrahim.tasks.repositories.TaskListRepository;
 import com.ibrahim.tasks.services.TaskListService;
+import jakarta.transaction.Transactional;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -29,7 +30,7 @@ public class TaskListServiceImpl implements TaskListService {
         if (taskList.getId() != null) {
             throw new IllegalArgumentException("TaskList already exists");
         }
-        if (null == taskList.getTitle() && taskList.getTitle().isBlank()) {
+        if (null == taskList.getTitle() || taskList.getTitle().isBlank()) {
             throw new IllegalArgumentException("Task title is required");
         }
         LocalDateTime now = LocalDateTime.now();
@@ -48,6 +49,7 @@ public class TaskListServiceImpl implements TaskListService {
         return taskListRepository.findById(id);
     }
 
+    @Transactional
     @Override
     public TaskList updateTaskList(UUID taskListId, TaskList taskList) {
         Optional<TaskList> optionalTaskList = taskListRepository.findById(taskListId);
