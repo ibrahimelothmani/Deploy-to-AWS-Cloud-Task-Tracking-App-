@@ -8,6 +8,7 @@ import com.ibrahim.tasks.mapper.TaskListMapper;
 import com.ibrahim.tasks.mapper.TaskMapper;
 import org.springframework.stereotype.Component;
 
+import java.time.LocalDateTime;
 import java.util.List;
 import java.util.Optional;
 
@@ -23,18 +24,18 @@ public class TaskListMapperImpl implements TaskListMapper {
     @Override
     public TaskList fromDto(TaskListDto taskListDto) {
         return new TaskList(
-                        taskListDto.id(),
-                        taskListDto.title(),
-                        taskListDto.description(),
-                null,
-                null,
+                taskListDto.id(),
+                taskListDto.title(),
+                taskListDto.description(),
+                LocalDateTime.now(), // created
+                LocalDateTime.now(), // updated
                 Optional.ofNullable(taskListDto.tasks())
-                                .map(tasks -> tasks.stream()
-                                        .map(taskMapper::fromDto)
-                                        .toList()
-                                ).orElse(null)
+                        .map(tasks -> tasks.stream()
+                                .map(taskMapper::fromDto)
+                                .toList())
+                        .orElse(null)
+        );
 
-                );
     }
 
     @Override

@@ -2,11 +2,10 @@ package com.ibrahim.tasks.controllers;
 
 
 import com.ibrahim.tasks.dto.TaskListDto;
+import com.ibrahim.tasks.entities.TaskList;
 import com.ibrahim.tasks.mapper.TaskListMapper;
 import com.ibrahim.tasks.services.TaskListService;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 import java.util.stream.Collectors;
@@ -29,5 +28,13 @@ public class TaskListController {
                 .stream()
                 .map(taskListMapper::toDto)
                 .toList();
+    }
+
+    @PostMapping
+    public TaskListDto createTaskList(@RequestBody TaskListDto taskListDto) {
+        TaskList createTaskList = taskListService.createTaskList(
+                taskListMapper.fromDto(taskListDto)
+        );
+        return taskListMapper.toDto(createTaskList);
     }
 }
